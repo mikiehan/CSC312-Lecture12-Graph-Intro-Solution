@@ -1,0 +1,9 @@
+visit 1 from 0
+visit 3 from 0
+visit 2 from 1
+visit 4 from 1
+visit 5 from 3
+visit 6 from 3
+visit 7 from 4
+visit 8 from 6
+0,1,2,3,4,5,6,7,8,
