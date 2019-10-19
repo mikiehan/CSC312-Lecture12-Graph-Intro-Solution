@@ -48,7 +48,7 @@ import java.util.LinkedList;
  *  <p>
  *  This implementation uses a nonrecursive version of breadth-first search
  *  with an explicit stack.
- *  See {@link RecursiveDFS} for the classic recursive version.
+ *  See {@link DepthFirstSearchRecursion} for the classic recursive version.
  *  The constructor takes time proportional to <em>V</em> + <em>E</em>,
  *  where <em>V</em> is the number of vertices and <em>E</em> is the number of edges.
  *  It uses extra space (not including the graph) proportional to <em>V</em>.

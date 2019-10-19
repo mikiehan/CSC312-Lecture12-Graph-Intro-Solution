@@ -45,9 +45,8 @@ import java.util.Stack;
  *  the vertices connected to a source vertex <em>s</em> in the undirected
  *  graph.
  *  <p>
- *  This implementation uses a nonrecursive version of depth-first search
- *  with an explicit stack.
- *  See {@link RecursiveDFS} for the classic recursive version.
+ *  This implementation uses a recursive version of depth-first search
+ *  See {@link DepthFirstSearchNoRecursion} for the classic recursive version.
  *  The constructor takes time proportional to <em>V</em> + <em>E</em>,
  *  where <em>V</em> is the number of vertices and <em>E</em> is the number of edges.
  *  It uses extra space (not including the graph) proportional to <em>V</em>.
