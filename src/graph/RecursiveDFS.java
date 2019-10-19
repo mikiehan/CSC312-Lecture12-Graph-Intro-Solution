@@ -25,10 +25,10 @@ import lib.In;
  *  The {@code graph.DepthFirstSearch} class represents a data type for
  *  determining the vertices connected to a given source vertex <em>s</em>
  *  in an undirected graph. For versions that find the paths, see
- *  {@link DepthFirstPaths} and {@link BreadthFirstPaths}.
+ *  {@link DepthFirstPathsRecursion} and {@link BreadthFirstPaths}.
  *  <p>
  *  This implementation uses depth-first search.
- *  See {@link DepthFirstSearch} for a non-recursive version.
+ *  See {@link DepthFirstSearchNoRecursion} for a non-recursive version.
  *  The constructor takes time proportional to <em>V</em> + <em>E</em>
  *  (in the worst case),
  *  where <em>V</em> is the number of vertices and <em>E</em> is the number of edges.

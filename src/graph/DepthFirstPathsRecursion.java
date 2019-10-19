@@ -52,9 +52,11 @@ import java.util.Stack;
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
-public class DepthFirstPaths {
+public class DepthFirstPathsRecursion {
+    private static final int INFINITY = Integer.MAX_VALUE;
     private boolean[] visited;    // marked[v] = is there an s-v path?
     private int[] edgeTo;        // edgeTo[v] = last edge on s-v path
+    private int[] distTo;      // distTo[v] = number of edges shortest s-v path
     private final int s;         // source vertex
 
     /**
@@ -63,21 +65,32 @@ public class DepthFirstPaths {
      * @param s the source vertex
      * @throws IllegalArgumentException unless {@code 0 <= s < V}
      */
-    public DepthFirstPaths(Graph G, int s) {
+    public DepthFirstPathsRecursion(Graph G, int s) {
         this.s = s;
         edgeTo = new int[G.V()];
+        distTo = new int[G.V()];
         visited = new boolean[G.V()];
         validateVertex(s);
-        dfs(G, s);
+        for (int v = 0; v < G.V(); v++)
+            distTo[v] = INFINITY;
+        distTo[s] = 0;
+        dfs(G, s, 0);
     }
 
-    // depth first search from v
-    private void dfs(Graph G, int v) {
-        visited[v] = true;
-        for (int w : G.adj(v)) {
-            if (!visited[w]) {
-                edgeTo[w] = v;
-                dfs(G, w);
+    // depth first search from curr
+    // level represents the distance from s
+    // so s's immediate neighbor will have level 1
+    // s's two degree neighbor will have level 2, etc..
+    private void dfs(Graph G, int curr, int level) {
+        visited[curr] = true;
+        for (int w : G.adj(curr)) {
+            //either not visited or
+            //even if it is visited if the distance calculated from s to w is greater than the level + 1
+            // this means need to update
+            if (!visited[w] || (level + 1 < distTo[w])) {
+                edgeTo[w] = curr;
+                distTo[w] = distTo[curr] + 1;
+                dfs(G, w, level + 1);
             }
         }
     }
@@ -111,6 +124,19 @@ public class DepthFirstPaths {
         return path;
     }
 
+    /**
+     * Returns the number of edges in a shortest path between the source vertex {@code s}
+     * (or sources) and vertex {@code v}?
+     *
+     * @param v the vertex
+     * @return the number of edges in a shortest path
+     * @throws IllegalArgumentException unless {@code 0 <= v < V}
+     */
+    public int distTo(int v) {
+        validateVertex(v);
+        return distTo[v];
+    }
+
     // throw an IllegalArgumentException unless {@code 0 <= v < V}
     private void validateVertex(int v) {
         int V = visited.length;
@@ -124,25 +150,25 @@ public class DepthFirstPaths {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        In in = new In(args[0]);
+        In in = new In("tinyCG.txt");
         Graph G = new Graph(in);
-        int s = Integer.parseInt(args[1]);
-        DepthFirstPaths dfs = new DepthFirstPaths(G, s);
+        int s = 0;
+        DepthFirstPathsRecursion dfs = new DepthFirstPathsRecursion(G, s);
 
         for (int v = 0; v < G.V(); v++) {
             if (dfs.hasPathTo(v)) {
-                System.out.print(s + " to " + v + ": ");
-                for (int x : dfs.pathTo(v)) {
+                System.out.print(s + " to " + v + " (" + dfs.distTo(v) + "): ");
+                Stack<Integer> path = (Stack<Integer>) dfs.pathTo(v);
+                while (!path.isEmpty()) {
+                    int x = path.pop();
                     if (x == s) System.out.print(x);
-                    else        System.out.print("-" + x);
+                    else System.out.print("-" + x);
                 }
                 System.out.println();
             }
-
             else {
                 System.out.println(s + " to " + v + ": not connected");
             }
-
         }
     }
 }

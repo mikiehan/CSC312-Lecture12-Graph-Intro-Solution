@@ -37,6 +37,7 @@ package graph;
  ******************************************************************************/
 
 import lib.In;
+
 import java.util.Stack;
 
 /**
@@ -58,7 +59,7 @@ import java.util.Stack;
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
-public class DepthFirstSearch {
+public class DepthFirstSearchRecursion {
     private boolean[] visited;  // marked[v] = is there an s-v path?
     /**
      * Computes the vertices connected to the source vertex {@code s} in the graph {@code G}.
@@ -66,27 +67,21 @@ public class DepthFirstSearch {
      * @param s the source vertex
      * @throws IllegalArgumentException unless {@code 0 <= s < V}
      */
-    public DepthFirstSearch(Graph G, int s) {
+    public DepthFirstSearchRecursion(Graph G, int s) {
         visited = new boolean[G.V()];
         validateVertex(s);
+        dfs(G, s);
+    }
 
-        // depth-first search using an explicit stack
-        Stack<Integer> stack = new Stack<>();
-        visited[s] = true;
-        stack.push(s);
-        while (!stack.isEmpty()) {
-            int curr = stack.pop();
-            for(int w : G.adj(curr)){
-                if (!visited[w]) {
-                    // discovered vertex w for the first time
-                    System.out.println("visit " + w + " from " + curr);
-                    visited[w] = true;
-                    stack.push(w);
-                }
+    // depth first search from curr
+    private void dfs(Graph G, int curr) {
+        visited[curr] = true;
+        for (int w : G.adj(curr)) {
+            if (!visited[w]) {
+                dfs(G, w);
             }
         }
     }
-
     /**
      * Is vertex {@code v} connected to the source vertex {@code s}?
      * @param v the vertex
@@ -112,10 +107,10 @@ public class DepthFirstSearch {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        In in = new In("tinyG.txt");
+        In in = new In("tinyCG.txt");
         Graph G = new Graph(in);
         int s = 0;
-        DepthFirstSearch dfs = new DepthFirstSearch(G, s);
+        DepthFirstSearchRecursion dfs = new DepthFirstSearchRecursion(G, s);
         for (int v = 0; v < G.V(); v++)
             if (dfs.marked(v))
                 System.out.print(v + " ");
