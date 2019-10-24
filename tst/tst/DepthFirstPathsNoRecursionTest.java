@@ -1,6 +1,6 @@
 package tst;
 
-import graph.BreadthFirstPaths;
+import graph.DepthFirstPathsNoRecursion;
 import graph.DepthFirstPathsRecursion;
 import graph.Graph;
 import lib.In;
@@ -15,7 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Stack;
 
-public class DepthFirstPathsRecursionTest {
+public class DepthFirstPathsNoRecursionTest {
     private static String dumpFileContentsToString(String filePath) {
         try {
             return new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
@@ -32,7 +32,7 @@ public class DepthFirstPathsRecursionTest {
         System.setOut(ps);
 
         //Call bfs
-        DepthFirstPathsRecursion bfs = new DepthFirstPathsRecursion(G, s);
+        DepthFirstPathsNoRecursion bfs = new DepthFirstPathsNoRecursion(G, s);
 
         for (int v = 0; v < G.V(); v++) {
             if (bfs.hasPathTo(v)) {
@@ -64,11 +64,11 @@ public class DepthFirstPathsRecursionTest {
 
     @Test
     public void test1(){
-        testAgainstFile("tinyCG.txt", "expected/DFPR_tinyCG_expected.txt", 0);
+        testAgainstFile("tinyCG.txt", "expected/DFP_tinyCG_expected.txt", 0);
     }
 
     @Test
     public void test2(){
-        testAgainstFile("mediumG.txt", "expected/DFPR_mediumG_expected.txt", 0);
+        testAgainstFile("mediumG.txt", "expected/DFP_mediumG_expected.txt", 0);
     }
 }

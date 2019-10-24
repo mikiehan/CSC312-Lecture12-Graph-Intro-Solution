@@ -38,6 +38,8 @@ package graph;
 
 import lib.In;
 
+import java.util.AbstractMap;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -80,19 +82,22 @@ public class DepthFirstPathsNoRecursion {
         distTo[s] = 0;
 
         // depth-first search using an explicit stack
-        Stack<Integer> stack = new Stack<>();
+        Stack<Map.Entry<Integer, Integer>> stack = new Stack<>();
         visited[s] = true;
-        stack.push(s);
+        stack.push(Pair.of(s, 0));
         while (!stack.isEmpty()) {
-            int curr = stack.pop();
+            Map.Entry<Integer, Integer> entry = stack.pop();
+            int curr = Pair.first(entry);
+            int level = Pair.second(entry);
             for(int w : G.adj(curr)){
-                if (!visited[w]) {
-                    // discovered vertex w for the first time
-                    System.out.println("visit " + w + " from " + curr);
+                //if w was never visited
+                //or even if it was visited, if dist to w is unnecessarily greater
+                if (!visited[w] || distTo[w] > level + 1 ) {
+                    //System.out.println("visit " + w + " from " + curr);
                     visited[w] = true;
                     edgeTo[w] = curr; //visited w from curr
                     distTo[w] = distTo[curr] + 1;
-                    stack.push(w);
+                    stack.push(Pair.of(w, level + 1));
                 }
             }
         }
@@ -167,7 +172,7 @@ public class DepthFirstPathsNoRecursion {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        In in = new In("tinyCG.txt");
+        In in = new In("mediumG.txt");
         Graph G = new Graph(in);
         int s = 0;
         DepthFirstPathsNoRecursion dfs = new DepthFirstPathsNoRecursion(G, s);
@@ -184,6 +189,23 @@ public class DepthFirstPathsNoRecursion {
             } else {
                 System.out.println(s + " to " + v + " (-): not connected");
             }
+        }
+    }
+
+    private static class Pair<T, U>
+    {
+        // Return a map entry (key-value pair) from the specified values
+        public static <T, U> Map.Entry<T, U> of(T first, U second)
+        {
+            return new AbstractMap.SimpleEntry<>(first, second);
+        }
+
+        public static <T, U> T first(Map.Entry<T, U> pair){
+            return pair.getKey();
+        }
+
+        public static <T, U> U second(Map.Entry<T, U> pair){
+            return pair.getValue();
         }
     }
 }
